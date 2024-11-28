@@ -2,32 +2,37 @@
 <template>
   <div>
     <!-- Barra de usuario -->
-    <div class="user-bar">
-      <span class="icon">👤</span>
-      <span class="user-name" @click="openUserDialog">
-        {{ nombreUsuario || "Usuario" }}
-      </span>
+    <div class="user-bar" @click="openUserDialog">
+      <img
+        :src="userProfileImage || defaultImage"
+        alt="Imagen de usuario"
+        class="profile-picture"
+      />
+      <div class="user-info">
+        <span class="user-name">{{ nombreUsuario || "USER" }}</span>
+        <span class="user-role">{{ userRole || "APODO" }}</span>
+      </div>
     </div>
 
     <!-- Diálogo de usuario -->
     <div v-if="showDialog" class="dialog-overlay">
       <div class="dialog">
-        <h3>Información del Usuario</h3>
+        <h3 class="dialog-title">Información del Usuario</h3>
         <form @submit.prevent="updateUser">
-          <!-- Mostrar imagen actual si existe -->
-          <div v-if="editableUser.profileImage">
-            <label>Foto de perfil actual:</label>
+          <!-- Imagen de perfil actual -->
+          <div class="form-group">
             <img
-              :src="getFullImageUrl(editableUser.profileImage)"
+              :src="userProfileImage || defaultImage"
               alt="Imagen de perfil"
               class="profile-image-preview"
             />
           </div>
-          <div>
-            <label for="profileImage">Cambiar Foto de perfil:</label>
+          <div class="form-group">
+            <label for="profileImage">Actualizar Foto de Perfil:</label>
             <input type="file" id="profileImage" @change="onFileChange" />
           </div>
-          <div>
+          <!-- Campo de usuario -->
+          <div class="form-group">
             <label for="usuario">Usuario:</label>
             <input
               type="text"
@@ -36,7 +41,8 @@
               required
             />
           </div>
-          <div>
+          <!-- Campo de apodo -->
+          <div class="form-group">
             <label for="apodo">Apodo:</label>
             <input
               type="text"
@@ -45,9 +51,15 @@
               required
             />
           </div>
+          <!-- Botones de acción -->
           <div class="button-group">
-            <button type="submit">Guardar Cambios</button>
-            <button type="button" @click="closeUserDialog">Cerrar</button>
+            <button type="submit" class="save-button">Guardar Cambios</button>
+            <button type="button" @click="deleteUser" class="delete-button">
+              Eliminar Usuario
+            </button>
+            <button type="button" @click="closeUserDialog" class="close-button">
+              Cerrar
+            </button>
           </div>
         </form>
       </div>
@@ -62,7 +74,10 @@ export default {
   data() {
     return {
       showDialog: false,
-      nombreUsuario: "",
+      nombreUsuario: "USER",
+      userRole: "APODO",
+      userProfileImage: "",
+      defaultImage: "https://via.placeholder.com/50", // Imagen predeterminada
       editableUser: {
         usuario: "",
         apodo: "",
@@ -73,20 +88,18 @@ export default {
     };
   },
   created() {
-    const storedUser = localStorage.getItem("usuario")?.replace(/^"|"$/g, "");
-    this.nombreUsuario = storedUser || "Usuario";
+    this.loadUserData();
   },
   methods: {
-    onFileChange(event) {
-      this.profileImage = event.target.files[0];
-    },
-    async openUserDialog() {
+    async loadUserData() {
       try {
         const token = localStorage.getItem("token");
         const userId = localStorage.getItem("id");
 
         if (!userId || !token) {
-          alert("No se encontró el ID del usuario o el token en el almacenamiento local.");
+          console.error(
+            "No se encontró el ID del usuario o el token en el almacenamiento local."
+          );
           return;
         }
 
@@ -97,11 +110,39 @@ export default {
           }
         );
 
-        this.editableUser = response.data; // Carga los datos del usuario
+        this.nombreUsuario = response.data.usuario || "USER";
+        this.userRole = response.data.apodo || "APODO";
+        this.userProfileImage = this.getFullImageUrl(response.data.profileImage);
+        this.editableUser = response.data;
+      } catch (error) {
+        console.error("Error al cargar los datos del usuario:", error);
+      }
+    },
+    async openUserDialog() {
+      try {
+        const token = localStorage.getItem("token");
+        const userId = localStorage.getItem("id");
+
+        if (!userId || !token) {
+          alert(
+            "No se encontró el ID del usuario o el token en el almacenamiento local."
+          );
+          return;
+        }
+
+        const response = await axios.get(
+          `${this.backendUrl}/api/usuario/getbyId/${userId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        this.editableUser = response.data;
+        this.userProfileImage = this.getFullImageUrl(response.data.profileImage);
         this.showDialog = true;
       } catch (error) {
         console.error("Error al obtener datos del usuario:", error);
-        alert("No se pudieron cargar los datos del usuario");
+        alert("No se pudieron cargar los datos del usuario.");
       }
     },
     closeUserDialog() {
@@ -110,13 +151,19 @@ export default {
     getFullImageUrl(imagePath) {
       return `${this.backendUrl}${imagePath}`;
     },
+    onFileChange(event) {
+      this.profileImage = event.target.files[0];
+      this.userProfileImage = URL.createObjectURL(this.profileImage);
+    },
     async updateUser() {
       try {
         const token = localStorage.getItem("token");
         const userId = localStorage.getItem("id");
 
         if (!userId || !token) {
-          alert("No se encontró el ID del usuario o el token en el almacenamiento local.");
+          alert(
+            "No se encontró el ID del usuario o el token en el almacenamiento local."
+          );
           return;
         }
 
@@ -127,21 +174,50 @@ export default {
           formData.append("profileImage", this.profileImage);
         }
 
-        await axios.put(`${this.backendUrl}/api/usuario/update/${userId}`, formData, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        });
+        await axios.put(
+          `${this.backendUrl}/api/usuario/update/${userId}`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
 
-        // Actualizar localStorage
-        localStorage.setItem("usuario", this.editableUser.usuario);
+        this.nombreUsuario = this.editableUser.usuario;
+        this.userRole = this.editableUser.apodo;
 
-        alert("Información actualizada correctamente");
+        alert("Información actualizada correctamente.");
         this.closeUserDialog();
       } catch (error) {
         console.error("Error al actualizar usuario:", error);
-        alert("No se pudo actualizar la información");
+        alert("No se pudo actualizar la información.");
+      }
+    },
+    async deleteUser() {
+      try {
+        const token = localStorage.getItem("token");
+        const userId = localStorage.getItem("id");
+
+        if (!userId || !token) {
+          alert(
+            "No se encontró el ID del usuario o el token en el almacenamiento local."
+          );
+          return;
+        }
+
+        await axios.delete(`${this.backendUrl}/api/usuario/delete/${userId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        alert("Usuario eliminado correctamente.");
+
+        localStorage.clear();
+        this.$router.push("/");
+      } catch (error) {
+        console.error("Error al eliminar usuario:", error);
+        alert("No se pudo eliminar el usuario.");
       }
     },
   },
@@ -149,34 +225,51 @@ export default {
 </script>
 
 <style scoped>
+/* Barra de usuario */
 .user-bar {
-  width: 300px;
-  height: 40px;
   display: flex;
   align-items: center;
-  background-color: #ffffff;
-  color: #333333;
-  padding: 0 20px;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background-color: #FFFFFF;
+  padding: 10px 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(250, 248, 248, 0.1);
+  color: white;
+  cursor: pointer;
   position: fixed;
-  top: 10px;
-  right: 20px;
+  top: 15px;
+  right: 15px;
   z-index: 1000;
-  border-radius: 8px;
+  width: 280px;
+}
+
+.profile-picture {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 15px;
+  border: 2px solid #ffffff;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .user-name {
-  font-weight: bold;
   font-size: 18px;
-  cursor: pointer;
-  margin-left: 5px;
-  transition: color 0.3s ease;
+  font-weight: bold;
+  color: black;
 }
 
-.user-name:hover {
-  color: #d3d3d3;
+.user-role {
+  font-size: 14px;
+  color: #0F4C75;
+  font-style: italic;
 }
 
+/* Diálogo */
 .dialog-overlay {
   position: fixed;
   top: 0;
@@ -187,79 +280,110 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1100;
 }
 
 .dialog {
   background: white;
   padding: 30px;
   border-radius: 12px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
-  width: 450px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+  width: 400px;
   max-width: 90%;
-  max-height: 90vh;
+  max-height: 85vh;
   overflow-y: auto;
 }
 
 .dialog h3 {
-  margin-bottom: 25px;
-  color: #333;
-  font-size: 24px;
-  font-weight: 600;
   text-align: center;
-}
-
-.dialog form > div {
   margin-bottom: 20px;
+  font-size: 22px;
+  color: #084c75;
+  font-weight: bold;
 }
 
-.dialog label {
-  display: block;
-  margin-bottom: 8px;
-  color: #555;
-  font-weight: 500;
-  font-size: 14px;
-}
-
-.dialog input[type="text"] {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #ddd;
-  border-radius: 6px;
-  font-size: 14px;
-}
-
+/* Imagen de perfil */
 .profile-image-preview {
-  width: 120px;
-  height: 120px;
+  width: 100px;
+  height: 100px;
   object-fit: cover;
   border-radius: 50%;
   display: block;
-  margin: 10px auto 15px;
-  border: 3px solid #f5f5f5;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  margin: 10px auto;
+  border: 2px solid #084c75;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+/* Grupos de formulario */
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 8px;
+  color: #333;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.form-group input[type="text"],
+.form-group input[type="file"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: #f9f9f9;
+  transition: border-color 0.3s ease;
+}
+
+.form-group input[type="text"]:focus,
+.form-group input[type="file"]:focus {
+  border-color: #084c75;
+  outline: none;
+}
+
+/* Botones */
 .button-group {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
   gap: 10px;
 }
 
-button[type="submit"] {
+button {
+  padding: 10px 15px;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.save-button {
   background-color: #084c75;
   color: white;
 }
 
-button[type="submit"]:hover {
-  background-color: #083d5e;
+.save-button:hover {
+  background-color: #063952;
 }
 
-button[type="button"] {
-  background-color: #f5f5f5;
+.delete-button {
+  background-color: #ff4d4f;
+  color: white;
+}
+
+.delete-button:hover {
+  background-color: #d12d2f;
+}
+
+.close-button {
+  background-color: #ccc;
   color: #333;
 }
 
-button[type="button"]:hover {
-  background-color: #e5e5e5;
+.close-button:hover {
+  background-color: #b3b3b3;
 }
 </style>
