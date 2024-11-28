@@ -19,18 +19,8 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/cotizaciones" class="menu-item" active-class="active">
-          COTIZACIONES
-        </router-link>
-      </li>
-      <li>
-        <router-link to="/facturas" class="menu-item" active-class="active">
-          FACTURAS
-        </router-link>
-      </li>
-      <li>
-        <router-link to="/facturas-recurrentes" class="menu-item" active-class="active">
-          FACTURAS RECURRENTES
+        <router-link to="/ventas" class="menu-item" active-class="active">
+          VENTAS
         </router-link>
       </li>
     </ul>
