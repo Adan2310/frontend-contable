@@ -1,4 +1,5 @@
 <!-- eslint-disable vue/multi-word-component-names -->
+<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="page-container">
     <BarraLateral />
@@ -6,9 +7,12 @@
       <Userbar />
       <main class="content">
         <h1>Clientes</h1>
-        <button class="add-contact-button" @click="openAddContactModal">
-          + Agregar nuevo Contacto
-        </button>
+        <!-- Contenedor del botón alineado a la derecha -->
+        <div class="add-contact-container">
+          <button class="add-contact-button" @click="openAddContactModal">
+            + Agregar nuevo Contacto
+          </button>
+        </div>
         <div class="table-container">
           <table>
             <thead>
@@ -233,28 +237,33 @@ export default {
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
+.add-contact-container {
+  display: flex;
+  justify-content: flex-end; /* Alinea el botón a la derecha */
+  margin-bottom: 20px; /* Espacio debajo del contenedor */
+}
+
 .add-contact-button {
-  background-color: #084c75;
+  background-color: #3282B8;
   color: white;
   padding: 12px 24px;
   border: none;
-  border-radius: 6px;
+  border-radius: 15px;
   font-size: 16px;
   cursor: pointer;
-  margin-bottom: 20px;
   transition: background-color 0.3s ease, transform 0.2s ease;
 }
 
 .add-contact-button:hover {
   background-color: #083d5e;
-  transform: scale(1.05); /* Le da un efecto visual al pasar el mouse */
+  transform: scale(1.05); /* Efecto visual */
 }
 
 .table-container {
   overflow-x: auto;
   background-color: white;
   padding: 15px;
-  border-radius: 8px;
+  border-radius: 15px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -271,8 +280,17 @@ td {
   border-bottom: 1px solid #ddd;
 }
 
-th {
-  background-color: #084c75;
+/* Bordes redondeados en el encabezado */
+thead tr th:first-child {
+  border-top-left-radius: 15px; /* Esquina superior izquierda */
+}
+
+thead tr th:last-child {
+  border-top-right-radius: 15px; /* Esquina superior derecha */
+}
+
+thead tr th {
+  background-color: #3282B8;
   color: white;
   text-transform: uppercase;
   font-size: 14px;
@@ -291,6 +309,7 @@ tr:hover td {
   cursor: pointer;
   font-size: 14px;
   transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-right: 10px; /* Agrega espacio entre los botones */
 }
 
 .edit-button:hover {
