@@ -1,5 +1,4 @@
 <!-- eslint-disable vue/multi-word-component-names -->
-<!-- eslint-disable vue/multi-word-component-names -->
 <template>
   <div class="page-container">
     <BarraLateral />
@@ -9,7 +8,7 @@
       <main class="content">
         <!-- Encabezado -->
         <header class="header">
-          <div>
+          <div class="header-left">
             <h1 class="title">VENTAS</h1>
             <div class="dropdown">
               <button class="dropdown-button">
@@ -22,12 +21,13 @@
               </div>
             </div>
           </div>
-          <button class="add-button" v-if="selectedSection === 'Facturas'">+ Agregar nueva Factura</button>
+          <button class="add-button" v-if="selectedSection === 'Facturas'">
+            + Agregar nueva Factura
+          </button>
         </header>
 
-        <!-- Sección dinámica -->
+        <!-- Tabla de Facturas -->
         <section v-if="selectedSection === 'Facturas'" class="table-section">
-          <!-- Tabla de Facturas -->
           <table class="custom-table">
             <thead>
               <tr>
@@ -44,29 +44,23 @@
                 <td>{{ factura.taxId }}</td>
                 <td>{{ factura.telefono }}</td>
                 <td>{{ factura.observaciones }}</td>
-                <td>
-                  <button class="edit-btn" @click="editFactura(factura.id)">✏️</button>
-                  <button class="delete-btn" @click="deleteFactura(factura.id)">🗑️</button>
+                <td class="actions">
+                  <button class="edit-btn" @click="editFactura(factura.id)">
+                    ✏️
+                  </button>
+                  <button class="delete-btn" @click="deleteFactura(factura.id)">
+                    🗑️
+                  </button>
                 </td>
               </tr>
             </tbody>
           </table>
         </section>
 
-        <section v-if="selectedSection === 'Facturas Recurrentes'" class="table-section">
-          <h2>Facturas Recurrentes</h2>
-          <p>Aquí irá el contenido de facturas recurrentes.</p>
-        </section>
-
-        <section v-if="selectedSection === 'Cotizaciones'" class="table-section">
-          <h2>Cotizaciones</h2>
-          <p>Aquí irá el contenido de cotizaciones.</p>
-        </section>
-
         <!-- Paginación -->
         <nav v-if="selectedSection === 'Facturas'" class="pagination">
           <button @click="prevPage" :disabled="currentPage === 1">«</button>
-          <span>Página {{ currentPage }} de {{ totalPages }}</span>
+          <span>{{ currentPage }} / {{ totalPages }}</span>
           <button @click="nextPage" :disabled="currentPage === totalPages">»</button>
         </nav>
       </main>
@@ -88,6 +82,7 @@ export default {
       selectedSection: "Facturas",
       facturas: [
         { id: 1, nombre: "Good Shoes", taxId: "ruuning", telefono: "314502365", observaciones: "Ewdgbsbdf" },
+        { id: 2, nombre: "Good Shoes", taxId: "ruuning", telefono: "314502365", observaciones: "Ewdgbsbdf" },
         // Agregar más datos simulados...
       ],
       currentPage: 1,
@@ -126,10 +121,10 @@ export default {
 }
 
 .content {
-  margin-left: 250px; /* Espacio para la barra lateral */
-  margin-top: 60px; /* Espacio para la barra de usuario */
+  margin-left: 250px;
+  margin-top: 60px;
   padding: 20px;
-  box-sizing: border-box;
+  background-color: #f8f9fa;
 }
 
 .header {
@@ -139,6 +134,12 @@ export default {
   margin-bottom: 20px;
 }
 
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
 .title {
   font-size: 24px;
   color: #084c75;
@@ -146,26 +147,26 @@ export default {
 
 .dropdown {
   position: relative;
-  display: inline-block;
 }
 
 .dropdown-button {
   padding: 10px 15px;
-  background-color: #084c75;
-  color: white;
-  border: none;
+  background-color: white;
+  color: #084c75;
+  border: 1px solid #084c75;
   border-radius: 8px;
-  cursor: pointer;
   font-weight: bold;
+  cursor: pointer;
 }
 
 .dropdown-content {
   display: none;
   position: absolute;
   background-color: white;
-  min-width: 150px;
   box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.1);
   z-index: 1;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .dropdown:hover .dropdown-content {
@@ -173,33 +174,22 @@ export default {
 }
 
 .dropdown-content button {
-  color: #084c75;
-  padding: 8px 12px;
-  text-decoration: none;
-  display: block;
+  padding: 10px;
+  width: 100%;
+  text-align: left;
   background: none;
   border: none;
   cursor: pointer;
-  width: 100%;
-  text-align: left;
-}
-
-.dropdown-content button:hover {
-  background-color: #f1f1f1;
 }
 
 .add-button {
   padding: 10px 15px;
-  background-color: #4CAF50;
+  background-color: #3282b8;
   color: white;
   border: none;
   border-radius: 8px;
-  cursor: pointer;
   font-weight: bold;
-}
-
-.add-button:hover {
-  background-color: #45a049;
+  cursor: pointer;
 }
 
 .table-section {
@@ -209,48 +199,57 @@ export default {
 .custom-table {
   width: 100%;
   border-collapse: collapse;
-}
-
-.custom-table th,
-.custom-table td {
-  border: 1px solid #ddd;
-  padding: 8px;
+  background-color: white;
+  border-radius: 8px;
+  overflow: hidden;
 }
 
 .custom-table th {
   background-color: #084c75;
   color: white;
   text-align: left;
+  padding: 10px;
+}
+
+.custom-table td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.actions {
+  display: flex;
+  gap: 8px;
+}
+
+.edit-btn,
+.delete-btn {
+  border: none;
+  border-radius: 6px;
+  padding: 5px 10px;
+  cursor: pointer;
+  color: white;
 }
 
 .edit-btn {
-  background-color: #FFD700;
-  border: none;
-  border-radius: 4px;
-  padding: 5px 10px;
-  cursor: pointer;
+  background-color: #ffdd57;
 }
 
 .delete-btn {
-  background-color: #FF6347;
-  border: none;
-  border-radius: 4px;
-  padding: 5px 10px;
-  cursor: pointer;
+  background-color: #ff6347;
 }
 
 .pagination {
   display: flex;
   justify-content: center;
-  align-items: center;
   margin-top: 20px;
 }
 
 .pagination button {
   padding: 5px 10px;
   margin: 0 5px;
-  border: none;
-  border-radius: 4px;
+  border: 1px solid #084c75;
+  background-color: white;
+  border-radius: 6px;
   cursor: pointer;
 }
 
