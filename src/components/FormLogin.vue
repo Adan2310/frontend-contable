@@ -66,72 +66,94 @@ export default {
 </script>
 
 <style scoped>
+/* Página principal del login */
 .login-page {
   display: flex;
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #428bca;
+  background-color: #3282B8; /* Fondo azul */
+  margin: 0;
 }
 
+/* Tarjeta de login */
 .login-card {
   background: #ffffff;
-  border-radius: 8px;
-  padding: 32px;
-  max-width: 400px;
-  width: 100%;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 40px; /* Espaciado interno */
+  max-width: 270px; /* Ancho máximo */
+  width: 90%; /* Para ajustar en pantallas pequeñas */
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
   text-align: center;
+  border-radius: 0px; /* Bordes ligeramente redondeados */
 }
 
+/* Título */
 .title {
-  margin-bottom: 24px;
+  margin-bottom: 20px;
   color: #333333;
-  font-size: 18px;
-  font-weight: 500;
+  font-size: 18px; /* Tamaño del texto */
+  font-weight: bold; /* Negrita */
 }
 
+/* Campos de entrada */
 .input-field {
   width: 100%;
-  padding: 10px;
-  margin-bottom: 16px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 14px;
+  padding: 12px;
+  margin-bottom: 15px;
+  border: 1px solid #ccc; /* Borde gris claro */
+  border-radius: 15px; /* Bordes redondeados */
+  font-size: 16px;
+  background-color: #f9f9f9; /* Fondo claro */
+  transition: all 0.3s ease;
 }
 
+.input-field:focus {
+  border-color: #0F4C75; /* Borde azul oscuro al enfocar */
+  outline: none; /* Sin borde adicional */
+}
+
+/* Botón de iniciar sesión */
 .login-button {
   width: 100%;
-  padding: 10px;
-  background-color: #0F4C75;
+  padding: 12px;
+  background-color: #0F4C75; /* Azul oscuro */
   color: white;
   border: none;
-  border-radius: 4px;
-  cursor: pointer;
+  border-radius: 15px; /* Bordes redondeados */
   font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .login-button:hover {
-  background-color: #083D5E;
+  background-color: #083D5E; /* Azul más oscuro al pasar el cursor */
 }
 
+/* Texto adicional */
 .extra-options {
-  margin-top: 16px;
+  margin-top: 10px;
   font-size: 14px;
+  color: #333333;
 }
 
 .signup-link {
-  color: #428bca;
+  color: #0F4C75; /* Azul oscuro */
   text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
 }
 
 .signup-link:hover {
+  color: #083D5E; /* Azul más oscuro al pasar el cursor */
   text-decoration: underline;
 }
 
+/* Mensaje de error */
 .error-message {
-  margin-top: 16px;
+  margin-top: 15px;
   color: red;
   font-size: 14px;
+  text-align: center; /* Centrado horizontal */
 }
 </style>

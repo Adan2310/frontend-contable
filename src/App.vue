@@ -1,43 +1,18 @@
 <template>
   <div id="app">
-    <!-- Contenido principal -->
-    <div class="content">
-      <router-view />
-    </div>
+    <router-view />
   </div>
 </template>
 
 <script>
-
-export default {
-};
+export default {};
 </script>
 
 <style>
 #app {
-  display: flex;
-  height: 100vh;
-}
-
-.content {
-  margin-left: 250px;
-  padding: 20px;
-  width: calc(100% - 250px); /* Ajusta el ancho para compensar la barra lateral */
-  display: flex;
-  flex-direction: column;
-  align-items: center; /* Centra horizontalmente */
-  text-align: center; /* Centra el texto */
-}
-
-nav {
-  text-align: center; /* Centra los enlaces de navegación */
-  margin-bottom: 20px;
-}
-
-router-view {
-  width: 100%; /* Ocupa todo el ancho disponible */
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  /* Estilos mínimos para evitar conflictos */
 }
 </style>
