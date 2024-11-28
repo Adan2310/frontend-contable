@@ -50,7 +50,7 @@ export default {
 .barra-lateral {
   width: 250px;
   height: 100vh;
-  background: #084c75; /* Azul oscuro */
+  background: #0F4C75; /* Azul oscuro */
   color: white;
   padding: 20px 0;
   position: fixed;
@@ -103,12 +103,12 @@ li {
 }
 
 .menu-item:hover {
-  background-color: #146ab8; /* Azul claro */
+  background-color: #3282B8; /* Azul claro */
 }
 
 .active {
-  background-color: #a6d4fa; /* Azul más claro para ruta activa */
-  color: #084c75;
+  background-color: #BBE1FA; /* Azul más claro para ruta activa */
+  color: #0F4C75;
 }
 
 /* Botón de Logout */
