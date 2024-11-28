@@ -2,54 +2,43 @@
   <div class="barra-lateral">
     <!-- Logo -->
     <div class="logo">
-      <!-- Imagen del logo -->
       <img src="@/assets/image.png" alt="Logo" class="logo-img" />
-      <span class="logo-text">KANBAN</span>
+      <span class="logo-text">JAVB</span>
     </div>
     
+    <!-- Menú -->
     <ul>
       <li>
-        <router-link to="/dashboard">
-          <span class="icon">📊</span>
-          Dashboard
+        <router-link to="/home" class="menu-item" active-class="active">
+          HOME
         </router-link>
       </li>
       <li>
-        <router-link to="/inventario">
-          <span class="icon">📦</span>
-          Inventory
+        <router-link to="/contactos" class="menu-item" active-class="active">
+          CONTACTOS
         </router-link>
       </li>
       <li>
-        <router-link to="/reportes">
-          <span class="icon">📈</span>
-          Reports
+        <router-link to="/cotizaciones" class="menu-item" active-class="active">
+          COTIZACIONES
         </router-link>
       </li>
       <li>
-        <router-link to="/proveedores">
-          <span class="icon">🤝</span>
-          Suppliers
+        <router-link to="/facturas" class="menu-item" active-class="active">
+          FACTURAS
         </router-link>
       </li>
       <li>
-        <router-link to="/ordenes">
-          <span class="icon">📝</span>
-          Orders
-        </router-link>
-      </li>
-      <li>
-        <router-link to="/tiendas">
-          <span class="icon">🏪</span>
-          Manage Store
+        <router-link to="/facturas-recurrentes" class="menu-item" active-class="active">
+          FACTURAS RECURRENTES
         </router-link>
       </li>
     </ul>
 
+    <!-- Botón de Logout -->
     <div class="settings-section">
       <button @click="logout" class="logout-btn">
-        <span class="icon">🚪</span>
-        Log Out
+        CERRAR SESIÓN
       </button>
     </div>
   </div>
@@ -59,118 +48,100 @@
 export default {
   methods: {
     logout() {
-      localStorage.clear(); // Limpia todos los datos del localStorage
-      this.$router.push("/"); // Redirige a la página de inicio
+      localStorage.clear(); // Limpiar datos de sesión
+      this.$router.push('/'); // Redirigir al login
     },
   },
 };
 </script>
 
-  
 <style scoped>
-.logo-img {
-  width: 40px; /* Tamaño pequeño para el logo */
-  height: auto;
-  display: block;
-  margin: 0 auto 10px; /* Centrado arriba del texto KANBAN */
-}
+/* Contenedor general */
 .barra-lateral {
   width: 250px;
   height: 100vh;
-  background: white;
+  background: #084c75; /* Azul oscuro */
   color: white;
-  padding: 10px;
+  padding: 20px 0;
   position: fixed;
   top: 0;
   left: 0;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1); /* Sombra restaurada */
-}
-.barra-lateral ul {
-  list-style: none;
-  padding: 0;
-}
-
-.barra-lateral li {
-  margin: 20px 0;
-  font-size: 17px;
-  color: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
 }
 
-.barra-lateral li:hover {
-  background-color: #ffffff30; /* Fondo al pasar el mouse */
-  cursor: pointer;
-  border-radius: 8px;
-}
-
-.layout {
-  margin-left: 300px; /* Espacio para la barra lateral fija */
-}
-
+/* Logo */
 .logo {
-  padding: 20px;
-  font-size: 24px;
-  font-weight: bold;
-  color: #0066ff;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
+.logo-img {
+  width: 50px;
+  height: auto;
+  display: block;
+  margin: 0 auto 10px;
+}
+
+.logo-text {
+  font-size: 20px;
+  font-weight: bold;
+}
+
+/* Menú */
 ul {
   list-style: none;
-  padding: 20px 0;
+  padding: 0;
   margin: 0;
 }
 
 li {
-  margin: 4px 0;
-  font-size: 18px;
-  align-items: center;
+  margin: 10px 0;
 }
 
-.icon {
-  margin-right: 10px;
-}
-
-a {
-  display: flex;
-  align-items: center;
+.menu-item {
+  display: block;
   padding: 12px 20px;
   text-decoration: none;
-  color: #666;
-  transition: all 0.3s ease;
+  color: white;
+  font-weight: bold;
+  font-size: 16px;
+  border-radius: 8px;
+  transition: background-color 0.3s ease;
 }
 
-a:hover, a.router-link-active {
-  background-color: #f0f0f0;
-  color: #0066ff;
+.menu-item:hover {
+  background-color: #146ab8; /* Azul claro */
 }
 
+.active {
+  background-color: #a6d4fa; /* Azul más claro para ruta activa */
+  color: #084c75;
+}
+
+/* Botón de Logout */
 .settings-section {
   margin-top: auto;
-  font-size: 1px;
-  padding-top: 50px;
-}
-
-.settings-link {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
+  padding: 20px;
 }
 
 .logout-btn {
   width: 100%;
-  font-size: 15px;
-  display: flex;
-  align-items: center;
-  padding: 12px 20px;
+  padding: 12px;
+  background-color: #d9534f; /* Rojo */
+  color: white;
   border: none;
-  background: none;
-  color: #666;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
-  transition: all 0.3s ease;
-  margin-top: 0px;
+  text-transform: uppercase;
+  transition: background-color 0.3s ease;
 }
 
 .logout-btn:hover {
-  background-color: #f0f0f0;
-  color: #0066ff;
+  background-color: #c9302c; /* Rojo más oscuro */
 }
 </style>

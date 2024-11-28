@@ -45,15 +45,19 @@ export default {
     async handleLogin() {
       try {
         const response = await axios.post("http://localhost:3000/api/usuario/login", this.form);
-        const { token } = response.data;
+        const { token, user } = response.data;
 
-        // Almacenar el token
+        // Almacenar el token y la información del usuario en localStorage
         localStorage.setItem("token", token);
+        localStorage.setItem("usuario", JSON.stringify(user.usuario));
+        localStorage.setItem("id", user.id);
+        if (user.profileImage) {
+          localStorage.setItem("profileImage", user.profileImage);
+        }
 
         // Redirigir al Home
         this.$router.push("/home");
       } catch (error) {
-        // Mostrar error en caso de fallo
         this.errorMessage = error.response?.data?.error || "Ocurrió un error inesperado";
       }
     },
