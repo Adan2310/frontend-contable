@@ -6,7 +6,9 @@ const routes = [
   { path: '/signup', name: 'signup', component: () => import('../views/Signup.vue') },
   { path: '/home', name: 'home', component: () => import('../views/Home.vue') },
   { path: '/contactos', name: 'contactos', component: () => import('../views/Contactos.vue') },
-  { path: '/ventas', name: 'ventas', component: () => import('../views/Ventas.vue') },
+  { path: '/ventas', name: 'facturas', component: () => import('../views/Facturas.vue') },
+  { path: '/facturas-recurrentes', name: 'facturas-recurrentes', component: () => import('../views/Facturas_Recurrentes.vue') },
+  { path: '/cotizaciones', name: 'cotizaciones', component: () => import('../views/Cotizaciones.vue') },
 ];
 
 const router = createRouter({

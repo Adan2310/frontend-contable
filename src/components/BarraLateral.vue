@@ -20,7 +20,17 @@
       </li>
       <li>
         <router-link to="/ventas" class="menu-item" active-class="active">
-          VENTAS
+          FACTURAS
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/facturas-recurrentes" class="menu-item" active-class="active">
+          FACTURAS RECURRENTES
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/cotizaciones" class="menu-item" active-class="active">
+          COTIZACIONES
         </router-link>
       </li>
     </ul>
