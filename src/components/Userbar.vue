@@ -9,8 +9,8 @@
         class="profile-picture"
       />
       <div class="user-info">
-        <span class="user-name">{{ nombreUsuario || "USER" }}</span>
-        <span class="user-role">{{ userRole || "APODO" }}</span>
+        <span class="user-name">{{ usuario || "USUARIO" }}</span>
+        <span class="user-role">{{ apodo || "APODO" }}</span>
       </div>
     </div>
 
@@ -51,6 +51,16 @@
               required
             />
           </div>
+          <!-- Campo de contraseña -->
+          <div class="form-group">
+            <label for="password">Nueva Contraseña:</label>
+            <input
+              type="password"
+              id="password"
+              v-model="editableUser.password"
+              placeholder="Dejar vacío para no cambiar"
+            />
+          </div>
           <!-- Botones de acción -->
           <div class="button-group">
             <button type="submit" class="save-button">Guardar Cambios</button>
@@ -74,13 +84,14 @@ export default {
   data() {
     return {
       showDialog: false,
-      nombreUsuario: "USER",
-      userRole: "APODO",
+      usuario: "",
+      apodo: "",
       userProfileImage: "",
       defaultImage: "https://via.placeholder.com/50", // Imagen predeterminada
       editableUser: {
         usuario: "",
         apodo: "",
+        password: "", // Nuevo campo para la contraseña
         profileImage: null,
       },
       profileImage: null,
@@ -110,40 +121,16 @@ export default {
           }
         );
 
-        this.nombreUsuario = response.data.usuario || "USER";
-        this.userRole = response.data.apodo || "APODO";
+        this.usuario = response.data.usuario || "USUARIO";
+        this.apodo = response.data.apodo || "APODO";
         this.userProfileImage = this.getFullImageUrl(response.data.profileImage);
         this.editableUser = response.data;
       } catch (error) {
         console.error("Error al cargar los datos del usuario:", error);
       }
     },
-    async openUserDialog() {
-      try {
-        const token = localStorage.getItem("token");
-        const userId = localStorage.getItem("id");
-
-        if (!userId || !token) {
-          alert(
-            "No se encontró el ID del usuario o el token en el almacenamiento local."
-          );
-          return;
-        }
-
-        const response = await axios.get(
-          `${this.backendUrl}/api/usuario/getbyId/${userId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
-        this.editableUser = response.data;
-        this.userProfileImage = this.getFullImageUrl(response.data.profileImage);
-        this.showDialog = true;
-      } catch (error) {
-        console.error("Error al obtener datos del usuario:", error);
-        alert("No se pudieron cargar los datos del usuario.");
-      }
+    openUserDialog() {
+      this.showDialog = true;
     },
     closeUserDialog() {
       this.showDialog = false;
@@ -170,6 +157,12 @@ export default {
         const formData = new FormData();
         formData.append("usuario", this.editableUser.usuario);
         formData.append("apodo", this.editableUser.apodo);
+
+        // Solo incluir la contraseña si se ha proporcionado
+        if (this.editableUser.password) {
+          formData.append("password", this.editableUser.password);
+        }
+
         if (this.profileImage) {
           formData.append("profileImage", this.profileImage);
         }
@@ -185,8 +178,8 @@ export default {
           }
         );
 
-        this.nombreUsuario = this.editableUser.usuario;
-        this.userRole = this.editableUser.apodo;
+        this.usuario = this.editableUser.usuario;
+        this.apodo = this.editableUser.apodo;
 
         alert("Información actualizada correctamente.");
         this.closeUserDialog();
@@ -212,7 +205,6 @@ export default {
         });
 
         alert("Usuario eliminado correctamente.");
-
         localStorage.clear();
         this.$router.push("/");
       } catch (error) {
