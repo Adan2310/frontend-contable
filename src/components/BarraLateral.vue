@@ -79,7 +79,7 @@ export default {
 }
 
 .logo-img {
-  width: 50px;
+  width: 100px;
   height: auto;
   display: block;
   margin: 0 auto 10px;

@@ -1,35 +1,144 @@
 <!-- eslint-disable vue/multi-word-component-names -->
 <template>
-    <div class="layout">
-      <Userbar/>
-      <BarraLateral/>
-      <div class="contenido-principal">
-        <h1>Pagina para el home</h1>
-        <!-- Aquí irá el resto de tu contenido -->
-      </div>
+  <div class="layout">
+    <Userbar />
+    <BarraLateral />
+    <div class="contenido-principal">
+      <header class="header">
+        <h1 class="title">ACTIVIDAD</h1>
+      </header>
+
+      <!-- Gráfica de actividad -->
+      <section class="chart-section">
+        <LineChart :chartData="chartData" />
+      </section>
+
+      <!-- Últimas cotizaciones y contactos -->
+      <section class="info-section">
+        <div class="info-card">
+          <h2>Cotizaciones Nuevas</h2>
+          <ul>
+            <li v-for="factura in ultimasFacturas" :key="factura.id">
+              {{ factura.numeroNota }} - {{ factura.contacto }}
+            </li>
+          </ul>
+        </div>
+        <div class="info-card">
+          <h2>Últimos Contactos</h2>
+          <ul>
+            <li v-for="contacto in ultimosContactos" :key="contacto.taxId">
+              {{ contacto.nombre }} - {{ contacto.telefono }}
+            </li>
+          </ul>
+        </div>
+      </section>
     </div>
-  </template>
+  </div>
+</template>
 
 <script>
-//import axios from 'axios';
+import axios from "axios";
 import Userbar from "@/components/Userbar.vue";
-import BarraLateral from "../components/BarraLateral.vue";
-  
+import BarraLateral from "@/components/BarraLateral.vue";
+import LineChart from "@/components/LineChart.vue"; // Cambiado el nombre al correcto
+
 export default {
   components: {
-    Userbar, 
+    Userbar,
     BarraLateral,
+    LineChart,
   },
   data() {
     return {
-      
+      ultimasFacturas: [],
+      ultimosContactos: [],
+      chartData: {
+        labels: [], // Se llenará dinámicamente
+        datasets: [
+          {
+            label: "Contactos",
+            data: [], // Datos dinámicos
+            backgroundColor: "rgba(15, 76, 117, 0.7)",
+          },
+          {
+            label: "Facturas",
+            data: [], // Datos dinámicos
+            backgroundColor: "rgba(50, 130, 184, 0.7)",
+          },
+        ],
+      },
     };
   },
   methods: {
-    
+    async fetchData() {
+      try {
+        // Obtener datos de contactos
+        const contactosResponse = await axios.get(
+          "http://localhost:3000/api/contacto/list"
+        );
+        const contactos = contactosResponse.data;
+
+        // Obtener datos de facturas
+        const facturasResponse = await axios.get(
+          "http://localhost:3000/api/factura/list"
+        );
+        const facturas = facturasResponse.data;
+
+        // Procesar datos para la gráfica
+        this.prepareChartData(contactos, facturas);
+
+        // Tomar las últimas 3 facturas y contactos
+        this.ultimasFacturas = facturas
+          .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
+          .slice(0, 3);
+
+        this.ultimosContactos = contactos
+          .sort((a, b) => b.nombre.localeCompare(a.nombre))
+          .slice(0, 3);
+      } catch (error) {
+        console.error("Error al cargar los datos:", error);
+      }
+    },
+    prepareChartData(contactos, facturas) {
+      // Agrupar contactos y facturas por mes
+      const meses = [
+        "Enero",
+        "Febrero",
+        "Marzo",
+        "Abril",
+        "Mayo",
+        "Junio",
+        "Julio",
+        "Agosto",
+        "Septiembre",
+        "Octubre",
+        "Noviembre",
+        "Diciembre",
+      ];
+      const contactosPorMes = this.aggregateByMonth(contactos, "nombre");
+      const facturasPorMes = this.aggregateByMonth(facturas, "fecha");
+
+      this.chartData.labels = meses;
+
+      this.chartData.datasets[0].data = meses.map(
+        (mes, index) => contactosPorMes[index] || 0
+      );
+      this.chartData.datasets[1].data = meses.map(
+        (mes, index) => facturasPorMes[index] || 0
+      );
+    },
+    aggregateByMonth(data, dateField) {
+      const counts = Array(12).fill(0); // 12 meses
+      data.forEach((item) => {
+        const date = new Date(item[dateField]);
+        const month = date.getMonth(); // Índice del mes (0-11)
+        counts[month]++;
+      });
+      return counts;
+    },
   },
   mounted() {
-    
+    this.fetchData();
   },
 };
 </script>
@@ -42,33 +151,60 @@ export default {
 
 .contenido-principal {
   flex: 1;
-  margin-left: 230px; /* Este valor debe ser igual al ancho de tu barra lateral */
+  margin-left: 230px;
   padding: 20px;
   display: flex;
   flex-direction: column;
-  align-items: center; /* Centra horizontalmente el contenido */
 }
 
-h1 {
+.header {
   text-align: center;
-  margin-bottom: 2rem;
+  margin-bottom: 20px;
+}
+
+.title {
+  font-size: 24px;
   color: #2c3e50;
+  font-weight: bold;
 }
 
-/* Si quieres que todo el contenido tenga un ancho máximo */
-.contenido-principal {
-  max-width: 1200px; /* O el valor que prefieras */
-  margin-left: auto;
-  margin-right: auto;
-  padding-left: calc(230px + 20px); /* barra lateral + padding */
-  padding-right: 20px;
+.chart-section {
+  margin-bottom: 20px;
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-/* Asegúrate de que el contenido no se solape con la barra en pantallas pequeñas */
-@media (max-width: 768px) {
-  .contenido-principal {
-    margin-left: 0;
-    padding-left: 20px;
-  }
+.info-section {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.info-card {
+  background-color: #ffffff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  flex: 1;
+}
+
+.info-card h2 {
+  font-size: 18px;
+  color: #084c75;
+  margin-bottom: 15px;
+}
+
+.info-card ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.info-card li {
+  font-size: 14px;
+  margin-bottom: 10px;
+  color: #2c3e50;
 }
 </style>
