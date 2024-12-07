@@ -72,27 +72,27 @@ export default {
   justify-content: center;
   align-items: center;
   min-height: 100vh;
-  background-color: #3282B8; /* Fondo azul */
+  background-color: #3282B8;
   margin: 0;
 }
 
 /* Tarjeta de login */
 .login-card {
   background: #ffffff;
-  padding: 40px; /* Espaciado interno */
-  max-width: 270px; /* Ancho máximo */
-  width: 90%; /* Para ajustar en pantallas pequeñas */
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+  padding: 40px; 
+  max-width: 270px; 
+  width: 90%;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); 
   text-align: center;
-  border-radius: 0px; /* Bordes ligeramente redondeados */
+  border-radius: 0px; 
 }
 
 /* Título */
 .title {
   margin-bottom: 20px;
   color: #333333;
-  font-size: 18px; /* Tamaño del texto */
-  font-weight: bold; /* Negrita */
+  font-size: 18px; 
+  font-weight: bold; 
 }
 
 /* Campos de entrada */
@@ -100,26 +100,26 @@ export default {
   width: 100%;
   padding: 12px;
   margin-bottom: 15px;
-  border: 1px solid #ccc; /* Borde gris claro */
-  border-radius: 15px; /* Bordes redondeados */
+  border: 1px solid #ccc; 
+  border-radius: 15px; 
   font-size: 16px;
-  background-color: #f9f9f9; /* Fondo claro */
+  background-color: #f9f9f9; 
   transition: all 0.3s ease;
 }
 
 .input-field:focus {
-  border-color: #0F4C75; /* Borde azul oscuro al enfocar */
-  outline: none; /* Sin borde adicional */
+  border-color: #0F4C75; 
+  outline: none; 
 }
 
 /* Botón de iniciar sesión */
 .login-button {
   width: 100%;
   padding: 12px;
-  background-color: #0F4C75; /* Azul oscuro */
+  background-color: #0F4C75; 
   color: white;
   border: none;
-  border-radius: 15px; /* Bordes redondeados */
+  border-radius: 15px; 
   font-size: 16px;
   font-weight: bold;
   cursor: pointer;
@@ -127,7 +127,7 @@ export default {
 }
 
 .login-button:hover {
-  background-color: #083D5E; /* Azul más oscuro al pasar el cursor */
+  background-color: #083D5E; 
 }
 
 /* Texto adicional */
@@ -138,14 +138,14 @@ export default {
 }
 
 .signup-link {
-  color: #0F4C75; /* Azul oscuro */
+  color: #0F4C75; 
   text-decoration: none;
   font-weight: bold;
   transition: color 0.3s ease;
 }
 
 .signup-link:hover {
-  color: #083D5E; /* Azul más oscuro al pasar el cursor */
+  color: #083D5E; 
   text-decoration: underline;
 }
 
@@ -154,6 +154,6 @@ export default {
   margin-top: 15px;
   color: red;
   font-size: 14px;
-  text-align: center; /* Centrado horizontal */
+  text-align: center;
 }
 </style>

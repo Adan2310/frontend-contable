@@ -40,7 +40,7 @@
 import axios from "axios";
 import Userbar from "@/components/Userbar.vue";
 import BarraLateral from "@/components/BarraLateral.vue";
-import LineChart from "@/components/LineChart.vue"; // Cambiado el nombre al correcto
+import LineChart from "@/components/LineChart.vue"; 
 
 export default {
   components: {
@@ -53,16 +53,16 @@ export default {
       ultimasFacturas: [],
       ultimosContactos: [],
       chartData: {
-        labels: [], // Se llenará dinámicamente
+        labels: [], 
         datasets: [
           {
             label: "Contactos",
-            data: [], // Datos dinámicos
+            data: [], 
             backgroundColor: "rgba(15, 76, 117, 0.7)",
           },
           {
             label: "Facturas",
-            data: [], // Datos dinámicos
+            data: [], 
             backgroundColor: "rgba(50, 130, 184, 0.7)",
           },
         ],
@@ -84,10 +84,8 @@ export default {
         );
         const facturas = facturasResponse.data;
 
-        // Procesar datos para la gráfica
         this.prepareChartData(contactos, facturas);
 
-        // Tomar las últimas 3 facturas y contactos
         this.ultimasFacturas = facturas
           .sort((a, b) => new Date(b.fecha) - new Date(a.fecha))
           .slice(0, 3);
@@ -100,7 +98,6 @@ export default {
       }
     },
     prepareChartData(contactos, facturas) {
-      // Agrupar contactos y facturas por mes
       const meses = [
         "Enero",
         "Febrero",
@@ -128,10 +125,10 @@ export default {
       );
     },
     aggregateByMonth(data, dateField) {
-      const counts = Array(12).fill(0); // 12 meses
+      const counts = Array(12).fill(0); 
       data.forEach((item) => {
         const date = new Date(item[dateField]);
-        const month = date.getMonth(); // Índice del mes (0-11)
+        const month = date.getMonth();
         counts[month]++;
       });
       return counts;

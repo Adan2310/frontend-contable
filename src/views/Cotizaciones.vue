@@ -66,7 +66,6 @@
               {{ isEditing ? "Editar Cotización" : "Nueva Cotización" }}
             </h2>
             <form @submit.prevent="saveCotizacion">
-              <!-- Información General -->
               <div class="form-header">
                 <div class="form-group">
                   <label for="numeroCotizacion">Número Cotización*</label>
@@ -549,7 +548,6 @@ tr:hover td {
   transform: scale(1.1);
 }
 
-/* Modal Styling */
 .modal-overlay {
   position: fixed;
   top: 0;

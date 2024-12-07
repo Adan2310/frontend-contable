@@ -228,18 +228,18 @@ export default {
 }
 
 .content {
-  margin-left: 250px; /* Espacio para la barra lateral */
-  margin-top: 60px; /* Espacio para la barra de usuario */
+  margin-left: 250px; 
+  margin-top: 60px; 
   padding: 20px;
-  background-color: #f8f9fa; /* Fondo más suave */
+  background-color: #f8f9fa; 
   border-radius: 8px;
   box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
 }
 
 .add-contact-container {
   display: flex;
-  justify-content: flex-end; /* Alinea el botón a la derecha */
-  margin-bottom: 20px; /* Espacio debajo del contenedor */
+  justify-content: flex-end; 
+  margin-bottom: 20px; 
 }
 
 .add-contact-button {
@@ -255,7 +255,7 @@ export default {
 
 .add-contact-button:hover {
   background-color: #083d5e;
-  transform: scale(1.05); /* Efecto visual */
+  transform: scale(1.05); 
 }
 
 .table-container {
@@ -279,13 +279,12 @@ td {
   border-bottom: 1px solid #ddd;
 }
 
-/* Bordes redondeados en el encabezado */
 thead tr th:first-child {
-  border-top-left-radius: 15px; /* Esquina superior izquierda */
+  border-top-left-radius: 15px; 
 }
 
 thead tr th:last-child {
-  border-top-right-radius: 15px; /* Esquina superior derecha */
+  border-top-right-radius: 15px; 
 }
 
 thead tr th {
@@ -296,7 +295,7 @@ thead tr th {
 }
 
 tr:hover td {
-  background-color: #f2f2f2; /* Fondo de fila al pasar el mouse */
+  background-color: #f2f2f2;
 }
 
 .edit-button {
@@ -308,12 +307,12 @@ tr:hover td {
   cursor: pointer;
   font-size: 14px;
   transition: background-color 0.3s ease, transform 0.2s ease;
-  margin-right: 10px; /* Agrega espacio entre los botones */
+  margin-right: 10px; 
 }
 
 .edit-button:hover {
   background-color: #e59400;
-  transform: scale(1.1); /* Resalta el botón */
+  transform: scale(1.1); 
 }
 
 .delete-button {
@@ -329,7 +328,7 @@ tr:hover td {
 
 .delete-button:hover {
   background-color: #d93a3b;
-  transform: scale(1.1); /* Resalta el botón */
+  transform: scale(1.1);
 }
 
 .modal-overlay {
@@ -411,7 +410,7 @@ textarea:focus {
 
 .save-button:hover {
   background-color: #083d5e;
-  transform: scale(1.05); /* Efecto visual */
+  transform: scale(1.05); 
 }
 
 .cancel-button {
@@ -426,10 +425,9 @@ textarea:focus {
 
 .cancel-button:hover {
   background-color: #ccc;
-  transform: scale(1.05); /* Efecto visual */
+  transform: scale(1.05); 
 }
 
-/* Animación del modal */
 @keyframes fadeIn {
   from {
     opacity: 0;

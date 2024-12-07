@@ -119,9 +119,9 @@ export default {
   padding: 40px;
   border-radius: 0;
   box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
-  max-width: 750px; /* Ancho ajustado */
+  max-width: 750px; 
   width: 100%;
-  text-align: left; /* Asegura que el contenido interno siga esta alineación */
+  text-align: left;
 }
 
 /* Título */
@@ -130,7 +130,7 @@ h2 {
   color: #000000;
   margin-bottom: 30px;
   font-weight: bold;
-  text-align: left; /* Alinea el título a la izquierda */
+  text-align: left; 
 }
 
 /* Formulario */

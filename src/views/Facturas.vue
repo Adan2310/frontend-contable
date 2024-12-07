@@ -285,7 +285,7 @@ export default {
       showModal: false,
       isEditing: false,
       form: {
-        id: "", // El ID debe ser ingresado manualmente
+        id: "", 
         numeroNota: 0,
         contacto: "",
         telefono: "",
@@ -301,12 +301,12 @@ export default {
             impuesto: 0,
             descripcion: "",
             cantidad: 0,
-            total: 0, // Total manual
+            total: 0, 
           },
         ],
-        subtotal: 0, // Subtotal ingresado manualmente
-        impuestos: 0, // Impuestos ingresados manualmente
-        total: 0, // Total ingresado manualmente
+        subtotal: 0, 
+        impuestos: 0, 
+        total: 0, 
         terminos: "",
         notas: "",
       },
@@ -392,7 +392,6 @@ export default {
       }
     },
     validateForm(data) {
-      // Verifica que no haya campos vacíos
       if (
         !data.id ||
         !data.numeroNota ||
@@ -409,7 +408,6 @@ export default {
         return false;
       }
 
-      // Verifica que cada item tenga datos completos
       for (const item of data.items) {
         if (
           !item.referencia ||
@@ -446,7 +444,7 @@ export default {
     },
     resetForm() {
       this.form = {
-        id: "", // El ID debe ser ingresado manualmente
+        id: "", 
         numeroNota: 0,
         contacto: "",
         telefono: "",
@@ -644,7 +642,6 @@ tr:hover td {
   transform: scale(1.1);
 }
 
-/* Modal Styling */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -765,7 +762,6 @@ select:focus {
   box-shadow: 0px 0px 8px rgba(8, 76, 117, 0.2);
 }
 
-/* ID Input Styling */
 .invoice-id {
   background-color: #eef2f3;
   font-weight: bold;

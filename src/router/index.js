@@ -18,19 +18,15 @@ const router = createRouter({
 
 // Middleware global para proteger rutas
 router.beforeEach((to, from, next) => {
-  const isAuthenticated = localStorage.getItem('token'); // Verifica si el usuario tiene un token válido
+  const isAuthenticated = localStorage.getItem('token'); 
 
   if (to.name === 'signup') {
-    // Permitir siempre el acceso a la página de registro
     next();
   } else if (to.name !== 'login' && !isAuthenticated) {
-    // Si no está autenticado y no está en login, redirige al login
     next({ name: 'login' });
   } else if (to.name === 'login' && isAuthenticated) {
-    // Si está autenticado y quiere ir al login, redirige al home
     next({ name: 'home' });
   } else {
-    // Permitir la navegación
     next();
   }
 });

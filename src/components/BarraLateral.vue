@@ -48,8 +48,8 @@
 export default {
   methods: {
     logout() {
-      localStorage.clear(); // Limpiar datos de sesión
-      this.$router.push('/'); // Redirigir al login
+      localStorage.clear(); 
+      this.$router.push('/'); 
     },
   },
 };
@@ -60,7 +60,7 @@ export default {
 .barra-lateral {
   width: 250px;
   height: 100vh;
-  background: #0F4C75; /* Azul oscuro */
+  background: #0F4C75; 
   color: white;
   padding: 20px 0;
   position: fixed;
@@ -113,11 +113,11 @@ li {
 }
 
 .menu-item:hover {
-  background-color: #3282B8; /* Azul claro */
+  background-color: #3282B8; 
 }
 
 .active {
-  background-color: #BBE1FA; /* Azul más claro para ruta activa */
+  background-color: #BBE1FA; 
   color: #0F4C75;
 }
 
@@ -130,7 +130,7 @@ li {
 .logout-btn {
   width: 100%;
   padding: 12px;
-  background-color: #d9534f; /* Rojo */
+  background-color: #d9534f; 
   color: white;
   border: none;
   border-radius: 8px;
@@ -142,6 +142,6 @@ li {
 }
 
 .logout-btn:hover {
-  background-color: #c9302c; /* Rojo más oscuro */
+  background-color: #c9302c;
 }
 </style>

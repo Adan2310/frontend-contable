@@ -87,15 +87,15 @@ export default {
       usuario: "",
       apodo: "",
       userProfileImage: "",
-      defaultImage: "https://via.placeholder.com/50", // Imagen predeterminada
+      defaultImage: "https://via.placeholder.com/50", 
       editableUser: {
         usuario: "",
         apodo: "",
-        password: "", // Nuevo campo para la contraseña
+        password: "", 
         profileImage: null,
       },
       profileImage: null,
-      backendUrl: "http://localhost:3000", // Cambiar según tu entorno
+      backendUrl: "http://localhost:3000",
     };
   },
   created() {
@@ -158,7 +158,6 @@ export default {
         formData.append("usuario", this.editableUser.usuario);
         formData.append("apodo", this.editableUser.apodo);
 
-        // Solo incluir la contraseña si se ha proporcionado
         if (this.editableUser.password) {
           formData.append("password", this.editableUser.password);
         }
